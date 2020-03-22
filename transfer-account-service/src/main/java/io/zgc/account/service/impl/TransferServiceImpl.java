@@ -1,5 +1,6 @@
 package io.zgc.account.service.impl;
 
+import io.seata.spring.annotation.GlobalTransactional;
 import io.zgc.account.manager.AccountServiceOtherClient;
 import io.zgc.account.service.AccountService;
 import io.zgc.account.service.TransferService;
@@ -16,7 +17,8 @@ public class TransferServiceImpl implements TransferService {
     @Autowired
     private AccountServiceOtherClient accountServiceOtherClient;
 
-    @Transactional
+    @GlobalTransactional // 在seata中，如果全局s事务发起的业务代码，不需要用到本地事务，那么就不需要@Transactional注解
+    //@Transactional 确保本地事务是可以执行的
     public boolean transfer(BigDecimal money) {
         //张三扣减金额》
         accountService.debit(1001, money);
